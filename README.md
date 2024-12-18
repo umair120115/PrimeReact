@@ -33,6 +33,6 @@ Make sure you have the following installed:
 2. install dependencies
   ```bash
     npm install
-2. run application
+3. run application
    ```bash
       npm start
