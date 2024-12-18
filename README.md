@@ -25,12 +25,12 @@ Make sure you have the following installed:
 - TypeScript (optional, if you are using TypeScript)
 
 ### Step 1: Clone the repository
-Clone this repository to your local machine:
+1. Clone this repository to your local machine:
 
-```bash
-git clone https://github.com/your-username/artworks-datatable.git
-cd artworks-datatable
-1. install dependencies
+   ```bash
+     git clone https://github.com/your-username/artworks-datatable.git
+     cd artworks-datatable
+2. install dependencies
   ```bash
     npm install
 2. run application
