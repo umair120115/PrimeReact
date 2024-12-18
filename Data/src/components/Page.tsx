@@ -7,7 +7,6 @@ import { Dialog } from 'primereact/dialog';
 import { InputNumber } from 'primereact/inputnumber';
 import { DataTablePageEvent, DataTableSelectionCellChangeEvent } from 'primereact/datatable';
 
-// Define the interface for the artwork data
 interface Artwork {
   id: number;
   title: string;
@@ -27,12 +26,12 @@ const Page = () => {
   const [showOverlay, setShowOverlay] = useState<boolean>(false); // Overlay visibility
   const [rowsToSelect, setRowsToSelect] = useState<number>(1); // Number of rows to select
 
-  // Fetch data when page or rowsPerPage changes
+ 
   useEffect(() => {
     getData(page, rowsPerPage);
   }, [page, rowsPerPage]);
 
-  // Fetch data from the API
+ 
   const getData = async (pageNumber: number, limit: number): Promise<void> => {
     try {
       const response = await axios.get(
@@ -64,17 +63,17 @@ const Page = () => {
     setSelectedRows(event.value as Artwork[]);
   };
 
-  // Handle selecting rows based on user input
+  
   const handleSelectRows = (): void => {
     if (rowsToSelect !== null && rowsToSelect > 0) {
       const rowsToSelectLimited = Math.min(rowsToSelect, data.length); // Ensure rowsToSelect doesn't exceed current page
       const selected = data.slice(0, rowsToSelectLimited); // Select top N rows
       setSelectedRows((prev) => [
-        ...prev.filter((row) => !data.some((d) => d.id === row.id)), // Retain selections not on the current page
+        ...prev.filter((row) => !data.some((d) => d.id === row.id)), 
         ...selected,
       ]);
     }
-    setShowOverlay(false); // Close overlay
+    setShowOverlay(false); 
   };
 
   return (
@@ -93,7 +92,7 @@ const Page = () => {
           onSelectionChange={onSelectionChange}
           tableStyle={{ minWidth: '50rem' }}
           dataKey="id"
-          selectionMode="multiple" // Add selectionMode property here
+          selectionMode="multiple" 
         >
           <Column selectionMode="multiple" headerStyle={{ width: '3em' }}></Column>
           <Column field="title" header="Title" style={{ width: '20%' }}></Column>
