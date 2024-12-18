@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect} from 'react';
 import axios from 'axios';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { InputNumber } from 'primereact/inputnumber';
-import { DataTablePageEvent, DataTableSelectionCellChangeEvent } from 'primereact/datatable';
+import { DataTablePageEvent, DataTableSelectionMultipleChangeEvent } from 'primereact/datatable';
 
 interface Artwork {
   id: number;
@@ -18,14 +18,14 @@ interface Artwork {
 }
 
 const Page = () => {
-  const [data, setData] = useState<Artwork[]>([]); // State for table data
-  const [page, setPage] = useState<number>(0); // Current page number
-  const [totalRecords, setTotalRecords] = useState<number>(0); // Total number of records
-  const [selectedRows, setSelectedRows] = useState<Artwork[]>([]); // Selected rows state
-  const [rowsPerPage, setRowsPerPage] = useState<number>(12); // Rows per page
-  const [showOverlay, setShowOverlay] = useState<boolean>(false); // Overlay visibility
-  const [rowsToSelect, setRowsToSelect] = useState<number>(1); // Number of rows to select
-
+  const [data, setData] = useState<Artwork[]>([]); 
+  const [page, setPage] = useState<number>(0); 
+  const [totalRecords, setTotalRecords] = useState<number>(0); 
+  const [selectedRows, setSelectedRows] = useState<Artwork[]>([]); 
+  // const [rowsPerPage, setRowsPerPage] = useState<number>(12); 
+  const [showOverlay, setShowOverlay] = useState<boolean>(false); 
+  const [rowsToSelect, setRowsToSelect] = useState<number>(1); 
+  const rowsPerPage= 12;
  
   useEffect(() => {
     getData(page, rowsPerPage);
@@ -52,22 +52,23 @@ const Page = () => {
       console.error('Error fetching data:', error);
     }
   };
+  
 
-  // Handle page change
+
   const onPageChange = (event: DataTablePageEvent): void => {
     setPage(event.page ?? 0);
   };
 
-  // Handle row selection change
-  const onSelectionChange = (event: DataTableSelectionCellChangeEvent): void => {
-    setSelectedRows(event.value as Artwork[]);
+ 
+  const onSelectionChange = (event: DataTableSelectionMultipleChangeEvent<Artwork[]>): void => {
+    setSelectedRows(event.value as unknown as Artwork[]);
   };
 
   
   const handleSelectRows = (): void => {
     if (rowsToSelect !== null && rowsToSelect > 0) {
-      const rowsToSelectLimited = Math.min(rowsToSelect, data.length); // Ensure rowsToSelect doesn't exceed current page
-      const selected = data.slice(0, rowsToSelectLimited); // Select top N rows
+      const rowsToSelectLimited = Math.min(rowsToSelect, data.length); 
+      const selected = data.slice(0, rowsToSelectLimited); 
       setSelectedRows((prev) => [
         ...prev.filter((row) => !data.some((d) => d.id === row.id)), 
         ...selected,
@@ -75,6 +76,10 @@ const Page = () => {
     }
     setShowOverlay(false); 
   };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsToSelect(Number(e.target.value) || 1);  // Convert to number and fallback to 1 if invalid
+  };
+  
 
   return (
     <>
@@ -134,7 +139,7 @@ const Page = () => {
           <InputNumber
             id="rowsToSelect"
             value={rowsToSelect}
-            onValueChange={(e) => setRowsToSelect(e.value)}
+            onVolumeChange={handleChange}
             min={1}
             max={rowsPerPage}
             style={{ width: '5rem' }}
